@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Add Google Fonts -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='panda1.png') }}" alt="Polar Bear" class="polar-bear" id="panda1-image">
+            <img src="{{ url_for('static', filename='panda2.png') }}" alt="Polar Bear" class="polar-bear" id="panda2-image" style="display: none;"> <!-- Initially hide panda2 -->
+            <h1 style="font-family: 'Arial', sans-serif; color: #FF5733;">Processor Search Engine</h1> <!-- Modified inline style -->
+        </div>
+        <form action="/search" method="get" class="search-form">
+            <label for="query" class="query-label" style="font-family: 'Verdana', sans-serif; color: #0099ff;">Enter your query:</label><br> <!-- Modified inline style -->
+            <input type="text" id="query" name="query" class="query-input"><br>
+            <input type="submit" value="Search" class="submit-button">
+        </form>
+        
+    </div>
+
+    <!-- JavaScript code to dynamically update the image source and move the panda -->
+    <script>
+        var panda1 = document.getElementById('panda1-image');
+        var panda2 = document.getElementById('panda2-image');
+        var isTyping = false;
+
+        // Function to move panda2
+        function movePanda(event) {
+            var x = event.clientX - panda2.offsetWidth / 2;
+            var y = event.clientY - panda2.offsetHeight / 2;
+            panda2.style.left = x + 'px';
+            panda2.style.top = y + 'px';
+        }
+
+        // Listen for keyboard input
+        document.getElementById('query').addEventListener('input', function() {
+            isTyping = true;
+            panda1.style.display = 'none'; // Hide panda1 when typing
+            panda2.style.display = 'block';
+            panda2.addEventListener('mousemove', movePanda); // Move panda2 when typing
+            panda2.addEventListener('mouseleave', function() {
+                panda2.style.display = 'none'; // Hide panda2 when cursor leaves panda2
+                panda1.style.display = 'block'; // Show panda1 when panda2 leaves
+            });
+        });
+
+        // Listen for mouse over panda1
+        panda1.addEventListener('mouseenter', function() {
+            panda1.style.display = 'none'; // Hide panda1 when cursor enters panda2
+            panda2.style.display = 'block';
+            panda2.addEventListener('mousemove', movePanda); // Move panda2 when cursor is over panda1
+            panda2.addEventListener('mouseleave', function() {
+                panda2.style.display = 'none'; // Hide panda2 when cursor leaves panda2
+                panda1.style.display = 'block'; // Show panda1 when panda2 leaves
+            });
+        });
+
+        // Reset panda image and stop moving when not typing
+        document.getElementById('query').addEventListener('blur', function() {
+            isTyping = false;
+            panda1.style.display = 'block';
+            panda2.style.display = 'none';
+            panda2.removeEventListener('mousemove', movePanda);
+        });
+
+        // Listen for mouse move to move panda2
+        document.addEventListener('mousemove', function(event) {
+            if (!isTyping && panda2.style.display === 'block') {
+                movePanda(event);
+            }
+        });
+    </script>
+</body>
+</html>

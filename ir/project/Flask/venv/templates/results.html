@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            display: block; /* Display each list item on a separate line */
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .url {
+            color: #666;
+            font-size: 14px;
+            display: block; /* Display the URL on a separate line */
+        }
+
+        .score {
+            color: #28a745;
+            font-weight: bold;
+            display: block; /* Display the score on a separate line */
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    <ul>
+        {% for result in results %}
+            <li>
+                <a href="{{ result[0] }}">{{ result[1] }}</a>
+                <span class="url">URL: {{ result[0] }}</span>
+                <span class="score">Score: {{ result[2] }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
